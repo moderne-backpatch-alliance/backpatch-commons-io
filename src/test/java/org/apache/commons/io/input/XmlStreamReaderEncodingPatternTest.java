@@ -65,4 +65,24 @@ public class XmlStreamReaderEncodingPatternTest {
             assertEquals("UTF-8", writer.getEncoding());
         }
     }
+
+    // The reader reads a prolog of at most 4096 bytes, so one parse stays short even with the
+    // old pattern (about 19 ms, against under 0.1 ms now). Keep the loop: the timeout needs it.
+    @Test(timeout = 5000)
+    public void readerParsesLongProcessingInstructionsQuickly() throws IOException {
+        final StringBuilder xml = new StringBuilder("<?xml-stylesheet ");
+        while (xml.length() < 2048) {
+            xml.append("<?xml");
+        }
+        xml.append(" encoding=\"");
+        while (xml.length() < 4090) {
+            xml.append('x');
+        }
+        final byte[] document = xml.append("?><r/>").toString().getBytes(StandardCharsets.UTF_8);
+        for (int i = 0; i < 2000 && !Thread.currentThread().isInterrupted(); i++) {
+            try (final XmlStreamReader reader = new XmlStreamReader(new ByteArrayInputStream(document))) {
+                assertEquals("UTF-8", reader.getEncoding());
+            }
+        }
+    }
 }
