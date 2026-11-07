@@ -692,7 +692,7 @@ public class XmlStreamReader extends Reader {
     // Keep this free of ".*" and other open-ended runs: they cause CVE-2024-47554.
     public static final Pattern ENCODING_PATTERN = Pattern.compile(
             "^<\\?xml\\s+"
-            + "version\\s*=\\s*(?:(?:\"1\\.[0-9]+\")|(?:'1.[0-9]+'))\\s+"
+            + "(?:version\\s*=\\s*(?:(?:\"1\\.[0-9]+\")|(?:'1.[0-9]+'))\\s+)??"
             + "encoding\\s*=\\s*"
             + "((?:\"[A-Za-z0-9][A-Za-z0-9._+:-]*\")"
             +  "|(?:'[A-Za-z0-9][A-Za-z0-9._+:-]*'))",
