@@ -744,7 +744,7 @@ public class XmlStreamReader extends Reader {
                 final StringBuffer prolog = new StringBuffer();
                 String line = bReader.readLine();
                 while (line != null) {
-                    prolog.append(line);
+                    prolog.append(line).append(' ');
                     line = bReader.readLine();
                 }
                 final Matcher m = ENCODING_PATTERN.matcher(prolog);
